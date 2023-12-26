@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Sistema de Monitores</title>
+</head>
+
+<body>
+  <h1 id="pageHeader">Cadastro de Estudantes</h1>
+  <div class="container" id="mainContainer">
+
+    <form id="studentForm">
+      <label for="name">Nome:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="date">Data:</label>
+      <input type="date" id="date" name="date" required onchange="updateSelect()">
+
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById('date').min = getCurrentDate();
+        });
+      </script>
+     
+     <label for="gradeReference">Horário:</label>
+     <select id="gradeReference" name="gradeReference" required disabled>
+      <option value="-1" disabled selected>Selecione o horário</option>
+     </select>
+
+      <button type="button"
+        onclick="addStudent(); showPopup(salvaStudents[salvaStudents.length - 1], salvaStudents.length - 1)">Cadastrar</button>
+
+    </form>
+
+    <form id="gradeForm" style="display: none;">
+      <label for="name">Descrição:</label><div id="nextGrade" style="display: none;"></div>
+      <input type="text" id="description" name="description" placeholder="Ex: seg - 07:00 - 08:00" required>
+
+      <button type="button"
+        onclick="addToGrade()">Cadastrar</button>
+
+    </form>
+
+  </div>
+
+  <div class="list-display" id="students-display">
+    <h1>Horários da semana:</h1>
+    <div class="container" id="week"></div>
+  </div>
+
+  <div id="popup" class="popup">
+    <div id="popup-content" class="popup-content"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="listagens.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
