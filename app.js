@@ -118,6 +118,7 @@ function getNextDayOfWeek(dayOfWeek,id) {
 }
 
 window.onload = ()=>{
+  screenSize()
 
   var daysOfWeek = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
 
@@ -167,4 +168,13 @@ window.onload = ()=>{
   getNextDayOfWeek(3, 'wednesday');
   getNextDayOfWeek(4, 'thursday');
   getNextDayOfWeek(5, 'friday');
+}
+
+function screenSize(){
+  if (window.innerHeight > window.innerWidth){
+    document.getElementById("week").style.flexDirection = "column"
+  }
+  else{
+    document.getElementById("week").style.flexDirection = "row"
+  }
 }

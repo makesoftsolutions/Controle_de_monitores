@@ -127,6 +127,7 @@ body {
   display: flex;
   justify-content: space-evenly;
   flex-wrap:inherit;
+  align-items: center;
 }  
 
 .day{
