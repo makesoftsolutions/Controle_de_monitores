@@ -25,7 +25,7 @@ function sortGrade(str1, str2) {
 }
 
 function load_students(grade) {
-  fetch("http://localhost:3000/api/students")
+  fetch("http://200.128.140.30:3000/api/students")
     .then((response) => response.json())
     .then((data) => {
       const days = [
@@ -104,7 +104,7 @@ function updateSelect() {
   });
 }
 
-fetch("http://localhost:3000/api/grades")
+fetch("http://200.128.140.30:3000/api/grades")
   .then((response) => response.json())
   .then((data) => {
     const gradeDropdown = document.getElementById("gradeReference");

@@ -1,5 +1,5 @@
 function submitForm(data,path) {
-  const apiUrl = 'http://localhost:3000/api/' + path;
+  const apiUrl = 'http://200.128.140.30:3000/api/' + path;
 
   axios.post(apiUrl, data)
       .then(response => {
