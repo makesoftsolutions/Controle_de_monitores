@@ -177,8 +177,10 @@ window.onload = ()=>{
 function screenSize(){
   if (window.innerHeight > window.innerWidth){
     document.getElementById("week").style.flexDirection = "column"
+    document.getElementById("week").style.alignItems = "center"
   }
   else{
     document.getElementById("week").style.flexDirection = "row"
+    document.getElementById("week").style.alignItems = "top"
   }
 }
