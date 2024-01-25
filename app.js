@@ -1,7 +1,7 @@
-function submitForm(data,path) {
+async function submitForm(data,path) {
   const apiUrl = 'https://7e70-200-128-140-22.ngrok-free.app/api/' + path;
 
-  axios.post(apiUrl, data, {
+  await axios.post(apiUrl, data, {
     headers: {
       'ngrok-skip-browser-warning': 'true'
     }
@@ -71,10 +71,10 @@ function showPopup(studentData, index) {
   popup.style.display = 'block';
 }
 
-function cadastrarStudent() {
+async function cadastrarStudent() {
   const latestStudentIndex = salvaStudents.length - 1;
   const latestStudentData = salvaStudents[latestStudentIndex];
-  submitForm(latestStudentData,'students');
+  await submitForm(latestStudentData,'students');
   closePopup(); 
   localStorage.setItem('form', 'student');
   window.location.reload()
