@@ -25,7 +25,7 @@ function sortGrade(str1, str2) {
 }
 
 function load_students(grade) {
-  fetch("https://36d8-2804-d45-c806-be00-9d2a-7025-6f18-e2d8.ngrok-free.app/api/students", {
+  fetch("https://7e70-200-128-140-22.ngrok-free.app/api/students", {
     headers: {
       'ngrok-skip-browser-warning': 'true'
     }
@@ -108,7 +108,7 @@ function updateSelect() {
   });
 }
 
-fetch("https://36d8-2804-d45-c806-be00-9d2a-7025-6f18-e2d8.ngrok-free.app/api/grades", {
+fetch("https://7e70-200-128-140-22.ngrok-free.app/api/grades", {
   headers: {
     'ngrok-skip-browser-warning': 'true'
   }
