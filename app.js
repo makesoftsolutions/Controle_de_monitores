@@ -1,10 +1,11 @@
 function submitForm(data,path) {
-  const apiUrl = 'https://36d8-2804-d45-c806-be00-9d2a-7025-6f18-e2d8.ngrok-free.app/api/' + path;
+  const apiUrl = 'https://[2804:d45:c806:be00:9d2a:7025:6f18:e2d8]:3000/api/' + path;
 
   axios.post(apiUrl, data)
       .then(response => {
           alert('Cadastro concluído com sucesso!');
           clearForm();
+          window.location.reload()
       })
       .catch(error => {
           alert('Erro ao cadastrar: ' + error.response.data.error);
@@ -33,6 +34,48 @@ function addStudent() {
   
 }
 
+function addToGrade(){
+  const description = document.getElementById("description").value
+  const regex = /^(seg|ter|qua|qui|sex)\s-\s\d{2}:\d{2}\s-\s\d{2}:\d{2}$/;
+
+
+  if (document.getElementById("nextGrade").value == null){
+    document.getElementById("nextGrade").value = 1
+  }
+
+  if (regex.test(description)){
+    const grade = [{
+      "_id": Number(document.getElementById("nextGrade").value),
+      "description": description
+    }]
+    submitForm({"Grade":grade},'grades')
+    localStorage.setItem('form', 'grade');
+  }
+  else{
+    alert("A entrada está em um formato inválido. Siga o exemplo: seg - 07:00 - 08:00")
+  }
+}
+
+async function addMonitor() {
+  const name = document.getElementById('nameMonitor').value;
+  const gradeReference = document.getElementsByClassName('checkbox')
+  let selectedReferences = []
+
+  Array.from(gradeReference).forEach(checkbox => {
+    if(checkbox.checked){
+      selectedReferences.push(checkbox.value)
+    }
+  })
+
+  const monitorData = {
+    name,
+    gradeReference: selectedReferences
+  }
+
+  submitForm(monitorData,'monitors')
+  localStorage.setItem('form', 'monitor');
+}
+
 function showPopup(studentData, index) {
   const popupContent = document.getElementById('popup-content');
   popupContent.innerHTML = `
@@ -40,25 +83,7 @@ function showPopup(studentData, index) {
       <strong>Data:</strong> ${studentData.date} - 
       <strong>Referências de Grade:</strong> ${studentData.gradeReference.join(', ')}
       <p class="warning-message">Após cadastrar, não será mais possível editar ou excluir.</p>
-      <p>  
-      Para manter o controle da limpeza, organização e orientação dos alunos, é necessário limitar o número de pessoas
-      dentro do laboratório.
-      <strong>REGRAS:</strong>
-      <ol>
-        <li>Não é permitido marcar horário para estudo, laboratório não é lugar para estudar, é local de fazer projetos.</li>
-        <li>Poderá ser marcado no mesmo horário um máximo de 8 pessoas, de acordo com o número de cadeiras.</li>
-        <li>Os horários disponíveis são de acordo com a disponibilidade dos monitores.</li>
-        <li>Cada marcação terá duração de uma hora, portanto, se atente em marcar mais horários caso queira ficar um tempo maior.</li>
-        <li>É necessário que cada pessoa marque individualmente, para que não extrapole o limite de pessoas no laboratório.</li>
-        <li>O aluno que abusar do horários de marcação, por exemplo marcar inúmeros horários desnecessariamente ou marcar
-          horário para ficar ocioso no laboratório, estará sujeito a punição de restrição temporária.</li>
-        <li>É imprescindível seguir as orientações do monitores, casos de desrespeito serão punidos perante as regras do
-          campus.</li>
-        <li>Todos os materiais utilizados deverão ser guardados no local que estavam, caso esteja fora, peça auxílio a algum
-          monitor.</li>
-      </ol>
-    </p>
-      <button onclick="removeStudent(${index})">Remover </button>
+      <button onclick="removeStudentVetor(${index})">Remover </button>
       <button onclick="cadastrarStudent()">Cadastrar</button>
       <button type="button" onclick="closePopup()">Fechar</button>
   `;
@@ -76,11 +101,10 @@ function cadastrarStudent() {
   window.location.reload()
 }
 
-function removeStudent(index) {
+function removeStudentVetor(index) {
   salvaStudents.splice(index, 1);
   alert('Estudante removido com sucesso!');
   clearForm();
-  console.log(salvaStudents);
 }
 
 function closePopup() {
@@ -117,8 +141,64 @@ function getNextDayOfWeek(dayOfWeek,id) {
   document.getElementById(id).innerText = "-  " + nextDay.getDate() + " / " + (nextDay.getMonth() + 1)
 }
 
+function switchToMonitors(){
+  document.getElementById("pageHeader").innerText = "Cadastro de Monitores"
+  document.getElementById("studentForm").style.display = "none"
+  document.getElementById("monitorForm").style.display = "block"
+  document.getElementById("students-display").style.display = "none"
+  document.getElementById("monitors-display").style.display = "block"
+  document.getElementById("gradeForm").style.display = "none"
+  document.getElementById("gradeDisplay").style.display = "none"
+
+  document.getElementById("switchBack").onclick = switchToStudents
+  document.getElementById("switchFoward").onclick = switchToGrade
+
+  localStorage.setItem('form', 'monitor');
+}
+
+function switchToStudents(){
+  document.getElementById("pageHeader").innerText = "Cadastro de Estudantes"
+  document.getElementById("studentForm").style.display = "block"
+  document.getElementById("monitorForm").style.display = "none"
+  document.getElementById("students-display").style.display = "block"
+  document.getElementById("monitors-display").style.display = "none"
+  document.getElementById("gradeForm").style.display = "none"
+  document.getElementById("gradeDisplay").style.display = "none"
+
+  document.getElementById("switchBack").onclick = switchToGrade
+  document.getElementById("switchFoward").onclick = switchToMonitors
+
+  localStorage.setItem('form', 'student');
+}
+
+function switchToGrade(){
+  document.getElementById("pageHeader").innerText = "Cadastro de Grade"
+  document.getElementById("studentForm").style.display = "none"
+  document.getElementById("monitorForm").style.display = "none"
+  document.getElementById("students-display").style.display = "none"
+  document.getElementById("monitors-display").style.display = "none"
+  document.getElementById("gradeForm").style.display = "block"
+  document.getElementById("gradeDisplay").style.display = "block"
+
+  document.getElementById("switchBack").onclick = switchToMonitors
+  document.getElementById("switchFoward").onclick = switchToStudents
+
+  localStorage.setItem('form', 'grade');
+}
+
 window.onload = ()=>{
-  screenSize()
+  load_grade()
+  const form = localStorage.getItem('form');
+
+  if (localStorage.getItem('form') === 'student' || localStorage.getItem('form') == null){
+    switchToStudents()
+  }
+  if (localStorage.getItem('form') === 'monitor'){
+    switchToMonitors()
+  }
+  if (localStorage.getItem('form') === 'grade'){
+    switchToGrade()
+  }
 
   var daysOfWeek = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
 
@@ -137,6 +217,7 @@ window.onload = ()=>{
     'Sexta': 'friday'
   }
   
+
   daysOfWeek.forEach(day => {
 
     const dayDiv = document.createElement('div');
@@ -170,11 +251,66 @@ window.onload = ()=>{
   getNextDayOfWeek(5, 'friday');
 }
 
-function screenSize(){
-  if (window.innerHeight > window.innerWidth){
-    document.getElementById("week").style.flexDirection = "column"
+window.addEventListener('keydown', function(event) {
+  if (event.key === 'Shift') {
+    Array.from(this.document.getElementsByClassName("removeButton")).forEach(box => {
+    box.style.display = "block"
+    })
   }
-  else{
-    document.getElementById("week").style.flexDirection = "row"
+});
+
+window.addEventListener('keyup', function(event) {
+  if (event.key === 'Shift') {
+      Array.from(this.document.getElementsByClassName("removeButton")).forEach(box => {
+        box.style.display = "none"
+      })
   }
+});
+
+function removeStudent(id){
+
+  const apiUrl = 'https://[2804:d45:c806:be00:9d2a:7025:6f18:e2d8]:3000/api/studentsRemove';
+  const data = {"_id":id}
+
+  axios.post(apiUrl, data)
+      .then(response => {
+          alert('Aluno removido com sucesso!');
+          localStorage.setItem('form', 'student');
+          window.location.reload()
+      })
+      .catch(error => {
+          alert('Erro ao remover: ' + error.response.data.error);
+      });
+}
+
+function removeMonitor(id){
+
+  const apiUrl = 'https://[2804:d45:c806:be00:9d2a:7025:6f18:e2d8]:3000/api/monitorsRemove';
+  const data = {"_id":id}
+
+  axios.post(apiUrl, data)
+      .then(response => {
+          alert(response.data.message);
+          localStorage.setItem('form', 'monitor');
+          window.location.reload()
+      })
+      .catch(error => {
+          alert('Erro ao remover: ' + error.response.data.error);
+      });
+}
+
+function removeGrade(id){
+
+  const apiUrl = 'https://[2804:d45:c806:be00:9d2a:7025:6f18:e2d8]:3000/api/gradesRemove';
+  const data = {"_id":id}
+
+  axios.post(apiUrl, data)
+      .then(response => {
+          alert(response.data.message);
+          localStorage.setItem('form', 'grade');
+          window.location.reload()
+      })
+      .catch(error => {
+          alert('Erro ao remover: ' + error.response.data.error);
+      });
 }

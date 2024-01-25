@@ -108,6 +108,7 @@ body {
     z-index: 999;
   }
   
+  
   .popup-content {
     background: #fff;
     border-radius: 10px;
@@ -127,7 +128,6 @@ body {
   display: flex;
   justify-content: space-evenly;
   flex-wrap:inherit;
-  align-items: center;
 }  
 
 .day{
