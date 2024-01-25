@@ -25,7 +25,7 @@ function sortGrade(str1, str2) {
 }
 
 function load_students(grade) {
-  fetch("https://[2804:d45:c806:be00:9d2a:7025:6f18:e2d8]:3000/api/students")
+  fetch("https://36d8-2804-d45-c806-be00-9d2a-7025-6f18-e2d8.ngrok-free.app/api/students")
     .then((response) => response.json())
     .then((data) => {
       const days = [
@@ -104,7 +104,7 @@ function updateSelect() {
   });
 }
 
-fetch("https://[2804:d45:c806:be00:9d2a:7025:6f18:e2d8]:3000/api/grades")
+fetch("https://36d8-2804-d45-c806-be00-9d2a-7025-6f18-e2d8.ngrok-free.app/api/grades")
   .then((response) => response.json())
   .then((data) => {
     const gradeDropdown = document.getElementById("gradeReference");
