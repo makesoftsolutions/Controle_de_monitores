@@ -26,6 +26,14 @@ function addStudent() {
     return;
   }
 
+  const selectedDate = new Date(rawDate);
+  const currentDate = new Date();
+
+  if (selectedDate <= currentDate) {
+    alert('Você não pode agendar para o mesmo dia. Selecione uma data futura.');
+    return;
+  }
+
   const formattedDate = new Date(rawDate).toISOString();
   const studentData = {
       name,
