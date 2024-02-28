@@ -1,3 +1,5 @@
+import getUrl from "./api";
+
 function sortGrade(str1, str2) {
   const extrairDados = (str) => {
     const match = str.match(/^(seg|ter|qua|qui|sex)\s-\s(\d{2}:\d{2})\s-\s\d{2}:\d{2}$/);
@@ -25,7 +27,7 @@ function sortGrade(str1, str2) {
 }
 
 function load_students(grade) {
-  fetch("https://7e70-200-128-140-22.ngrok-free.app/api/students", {
+  fetch(getUrl() + "/students", {
     headers: {
       'ngrok-skip-browser-warning': 'true'
     }
@@ -108,7 +110,7 @@ function updateSelect() {
   });
 }
 
-fetch("https://7e70-200-128-140-22.ngrok-free.app/api/grades", {
+fetch(getUrl() + "/grades", {
   headers: {
     'ngrok-skip-browser-warning': 'true'
   }
