@@ -59,7 +59,7 @@ function showPopup(studentData, index) {
       </ol>
     </p>
       <div>
-        <input class="popUpInput" id="terms" type="checkbox">Li e aceito os termos</input>
+        <input class="popUpInput" id="terms" type="checkbox"><p id="termsText">Li e aceito os termos</p></input>
       </div>
         <button class="popUpInput" onclick="cadastrarStudent()">Cadastrar</button>
       <button class="popUpInput" type="button" onclick="closePopup()">Fechar</button>
@@ -72,6 +72,7 @@ function showPopup(studentData, index) {
 async function cadastrarStudent() {
 
   if (! document.getElementById("terms").checked){
+    document.getElementById("termsText").style.color = "red"
     return
   }
 
