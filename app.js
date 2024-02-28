@@ -1,5 +1,7 @@
+import getUrl from "./api";
+
 async function submitForm(data,path) {
-  const apiUrl = 'https://7e70-200-128-140-22.ngrok-free.app/api/' + path;
+  const apiUrl = getUrl() + path;
 
   await axios.post(apiUrl, data, {
     headers: {
