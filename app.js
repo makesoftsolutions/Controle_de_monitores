@@ -59,7 +59,7 @@ function showPopup(studentData, index) {
       </ol>
     </p>
       <div>
-        <input class="popUpInput" type="checkbox">Li e aceito os termos</input>
+        <input class="popUpInput" id="terms" type="checkbox">Li e aceito os termos</input>
       </div>
         <button class="popUpInput" onclick="cadastrarStudent()">Cadastrar</button>
       <button class="popUpInput" type="button" onclick="closePopup()">Fechar</button>
@@ -70,6 +70,11 @@ function showPopup(studentData, index) {
 }
 
 async function cadastrarStudent() {
+
+  if (! document.getElementById("terms").checked){
+    return
+  }
+
   const latestStudentIndex = salvaStudents.length - 1;
   const latestStudentData = salvaStudents[latestStudentIndex];
   await submitForm(latestStudentData,'students');
