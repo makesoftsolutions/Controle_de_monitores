@@ -1,7 +1,5 @@
-import getUrl from "./api";
-
 async function submitForm(data,path) {
-  const apiUrl = getUrl() + path;
+  const apiUrl = getUrl() + "/" + path;
 
   await axios.post(apiUrl, data, {
     headers: {
@@ -42,10 +40,6 @@ function addStudent() {
 function showPopup(studentData, index) {
   const popupContent = document.getElementById('popup-content');
   popupContent.innerHTML = `
-      <strong>Nome:</strong> ${studentData.name} - 
-      <strong>Data:</strong> ${studentData.date} - 
-      <strong>Referências de Grade:</strong> ${studentData.gradeReference.join(', ')}
-      <p class="warning-message">Após cadastrar, não será mais possível editar ou excluir.</p>
       <p>  
       Para manter o controle da limpeza, organização e orientação dos alunos, é necessário limitar o número de pessoas
       dentro do laboratório.
@@ -64,9 +58,11 @@ function showPopup(studentData, index) {
           monitor.</li>
       </ol>
     </p>
-      <button onclick="removeStudent(${index})">Remover </button>
-      <button onclick="cadastrarStudent()">Cadastrar</button>
-      <button type="button" onclick="closePopup()">Fechar</button>
+      <div>
+        <input class="popUpInput" type="checkbox">Li e aceito os termos</input>
+      </div>
+        <button class="popUpInput" onclick="cadastrarStudent()">Cadastrar</button>
+      <button class="popUpInput" type="button" onclick="closePopup()">Fechar</button>
   `;
 
   const popup = document.getElementById('popup');

@@ -1,5 +1,3 @@
-import getUrl from "./api";
-
 function sortGrade(str1, str2) {
   const extrairDados = (str) => {
     const match = str.match(/^(seg|ter|qua|qui|sex)\s-\s(\d{2}:\d{2})\s-\s\d{2}:\d{2}$/);
@@ -66,12 +64,13 @@ function load_students(grade) {
           (gradeItem) => gradeItem._id === studentGradeId
         ).description;
 
-        const week = new Date().getTime() + 7 * 24 * 60 * 60 * 1000; //somando uma semana em ms
+        const nextWeek = new Date().getTime() + 7 * 24 * 60 * 60 * 1000; //somando uma semana em ms
 
         days.forEach((day) => {
           if (
             studentReference.getDay() == days.indexOf(day) &&
-            studentReference.getTime() < week
+            studentReference.getTime() < nextWeek &&
+            studentReference.getTime() >= new Date().getTime() - 24*60*60*1000
           ) {
             const studentItem = document.createElement("div");
             studentItem.innerHTML = `<div class=\"student-print\"><strong>Nome:</strong> ${student.name}<br> <strong>Horário:</strong> ${studentGradeDescription}</div>`;
