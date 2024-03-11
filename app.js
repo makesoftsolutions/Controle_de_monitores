@@ -9,7 +9,6 @@ async function submitForm(data,path) {
       .then(response => {
           alert('Cadastro concluído com sucesso!');
           clearForm();
-          window.location.reload()
       })
       .catch(error => {
           alert('Erro ao cadastrar: ' + error.response.data.error);
@@ -20,7 +19,7 @@ let salvaStudents = []
 function addStudent() {
   const name = document.getElementById('name').value;
   const rawDate = document.getElementById('date').value;
-  const gradeReference = Array.from(document.getElementById('gradeReference').selectedOptions, option => option.value);
+  const gradeReference = document.getElementById('gradeReference').value.split(',');
 
   if (!rawDate || isNaN(new Date(rawDate))) {
     alert('Data inválida!');
@@ -28,20 +27,17 @@ function addStudent() {
   }
 
   const formattedDate = new Date(rawDate).toISOString();
+  const studentData = {
+      name,
+      date: [formattedDate],
+      gradeReference: gradeReference.map(reference => Number(reference.trim()))
+  }; 
 
-  gradeReference.forEach(grade => {
-    if (grade != -1){
-      const studentData = {
-          name,
-          date: [formattedDate],
-          gradeReference: [grade]
-      }; 
-      salvaStudents.push(studentData);
-    }
-  });
+  salvaStudents.push(studentData);
+  
 }
 
-function showPopup() {
+function showPopup(studentData, index) {
   const popupContent = document.getElementById('popup-content');
   popupContent.innerHTML = `
       <p>  
@@ -80,11 +76,12 @@ async function cadastrarStudent() {
     return
   }
 
-  salvaStudents.forEach(grade => {
-    submitForm(grade,'students');
-  })
+  const latestStudentIndex = salvaStudents.length - 1;
+  const latestStudentData = salvaStudents[latestStudentIndex];
+  await submitForm(latestStudentData,'students');
   closePopup(); 
   localStorage.setItem('form', 'student');
+  window.location.reload()
 }
 
 function removeStudent(index) {
