@@ -26,25 +26,15 @@
       </script>
      
      <label for="gradeReference">Horário:</label>
-     <select id="gradeReference" name="gradeReference" required disabled>
+     <select id="gradeReference" name="gradeReference" required disabled multiple>
       <option value="-1" disabled selected>Selecione o horário</option>
      </select>
 
       <button type="button"
-        onclick="addStudent(); showPopup(salvaStudents[salvaStudents.length - 1], salvaStudents.length - 1)">Cadastrar</button>
+        onclick="addStudent(); showPopup()">Cadastrar</button>
 
     </form>
-
-    <form id="gradeForm" style="display: none;">
-      <label for="name">Descrição:</label><div id="nextGrade" style="display: none;"></div>
-      <input type="text" id="description" name="description" placeholder="Ex: seg - 07:00 - 08:00" required>
-
-      <button type="button"
-        onclick="addToGrade()">Cadastrar</button>
-
-    </form>
-
-  </div>
+    <div style="display: none;" id="nextGrade"></div>
 
   <div class="list-display" id="students-display">
     <h1>Horários da semana:</h1>
