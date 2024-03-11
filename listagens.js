@@ -127,7 +127,7 @@ fetch(getUrl() + "/grades", {
     data.forEach((grade) => {
       const option = document.createElement("option");
       option.value = grade._id;
-      option.text = `${grade.description} (${grade._id})`;
+      option.text = `${grade.description}`;
       gradeDropdown.appendChild(option);
     });
     load_students(data);
