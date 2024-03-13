@@ -185,9 +185,11 @@ function screenSize(){
   if (window.innerHeight > window.innerWidth){
     document.getElementById("week").style.flexDirection = "column"
     document.getElementById("week").style.alignItems = "center"
+    document.getElementById("gradeDesktopTip").style.display = "none"
   }
   else{
     document.getElementById("week").style.flexDirection = "row"
     document.getElementById("week").style.alignItems = "top"
+    document.getElementById("gradeDesktopTip").style.display = ""
   }
 }
