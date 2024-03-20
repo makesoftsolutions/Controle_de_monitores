@@ -86,6 +86,7 @@ function load_students(grade) {
 }
 
 function updateSelect() {
+  
   let select = document.getElementById("gradeReference");
 
   select.disabled = false;
@@ -109,7 +110,7 @@ function updateSelect() {
   });
 }
 
-fetch(getUrl() + "/grades", {
+fetch(getUrl() + "/filteredGrades", {
   headers: {
     'ngrok-skip-browser-warning': 'true'
   }
@@ -128,6 +129,7 @@ fetch(getUrl() + "/grades", {
       const option = document.createElement("option");
       option.value = grade._id;
       option.text = `${grade.description}`;
+      option.style.display = "none"
       gradeDropdown.appendChild(option);
     });
     load_students(data);

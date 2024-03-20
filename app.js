@@ -179,6 +179,17 @@ window.onload = ()=>{
   getNextDayOfWeek(3, 'wednesday');
   getNextDayOfWeek(4, 'thursday');
   getNextDayOfWeek(5, 'friday');
+
+  const currentDate = new Date();
+  const minDate = currentDate.toISOString().split('T')[0];
+
+  const maxDate = new Date(currentDate);
+  maxDate.setDate(maxDate.getDate() + 14);
+  const maxDateString = maxDate.toISOString().split('T')[0];
+
+  document.getElementById('date').setAttribute('min', minDate);
+  document.getElementById('date').setAttribute('max', maxDateString);
+
 }
 
 function screenSize(){
