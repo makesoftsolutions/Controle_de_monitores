@@ -40,7 +40,7 @@ function load_students(grade) {
         "friday-list",
       ];
 
-      // Adicionei aqui aqui para ordenar os estudantes por dia e horário (funcionando)
+      // Adicionei aqui para ordenar os estudantes por dia e horário (funcionando)
       data.sort((a, b) => {
         const dateA = new Date(a.date[0]).getTime();
         const dateB = new Date(b.date[0]).getTime();
@@ -56,6 +56,14 @@ function load_students(grade) {
 
         return dateA - dateB;
       });
+
+      let counter = {
+        'monday-list': 0,
+        'tuesday-list': 0,
+        'wednesday-list': 0,
+        'thursday-list': 0,
+        'friday-list': 0
+      };
 
       data.forEach((student) => {
         const studentReference = new Date(student.date[0]);
@@ -76,9 +84,18 @@ function load_students(grade) {
             studentItem.innerHTML = `<div class=\"student-print\"><strong>Nome:</strong> ${student.name}<br> <strong>Horário:</strong> ${studentGradeDescription}</div>`;
 
             document.getElementById(day).appendChild(studentItem);
+
+            counter[day]++;
           }
         });
       });
+
+      days.forEach((day) => {
+        const countElement = document.createElement("div");
+        countElement.innerHTML = `Vagas disponíveis: ${8 - counter[day] || 0}`;
+        document.getElementById(day).appendChild(countElement);
+      });
+
     })
     .catch((error) => {
       console.error("Erro ao obter os estudantes disponíveis:", error);
