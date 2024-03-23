@@ -172,6 +172,7 @@ window.onload = ()=>{
     dayDiv.appendChild(StudentsListDiv)
 
     document.getElementById("week").appendChild(dayDiv);
+    
   });
 
   getNextDayOfWeek(1,"monday");

@@ -24,6 +24,8 @@ function sortGrade(str1, str2) {
   }
 }
 
+var studentsCounter = []
+
 function load_students(grade) {
   fetch(getUrl() + "/students", {
     headers: {
@@ -57,14 +59,6 @@ function load_students(grade) {
         return dateA - dateB;
       });
 
-      let counter = {
-        'monday-list': 0,
-        'tuesday-list': 0,
-        'wednesday-list': 0,
-        'thursday-list': 0,
-        'friday-list': 0
-      };
-
       data.forEach((student) => {
         const studentReference = new Date(student.date[0]);
         const studentGradeId = student.gradeReference[0];
@@ -82,18 +76,17 @@ function load_students(grade) {
           ) {
             const studentItem = document.createElement("div");
             studentItem.innerHTML = `<div class=\"student-print\"><strong>Nome:</strong> ${student.name}<br> <strong>Horário:</strong> ${studentGradeDescription}</div>`;
-
             document.getElementById(day).appendChild(studentItem);
 
-            counter[day]++;
+            studentsCounter[`1studentscounter${student.gradeReference[0]}`]= parseInt(studentsCounter[`1studentscounter${student.gradeReference[0]}`]) - 1
+          }
+          else if(
+            studentReference.getDay() == days.indexOf(day) &&
+            studentReference.getTime() >= new Date().getTime() - 24*60*60*1000
+          ){
+            studentsCounter[`2studentscounter${student.gradeReference[0]}`]= parseInt(studentsCounter[`2studentscounter${student.gradeReference[0]}`]) - 1
           }
         });
-      });
-
-      days.forEach((day) => {
-        const countElement = document.createElement("div");
-        countElement.innerHTML = `Vagas disponíveis: ${8 - counter[day] || 0}`;
-        document.getElementById(day).appendChild(countElement);
       });
 
     })
@@ -125,6 +118,18 @@ function updateSelect() {
     const display = option.text.includes(filter);
     option.style.display = display ? "block" : "none";
   });
+
+
+  let elements = document.querySelectorAll("[id^='1studentscounter'], [id^='2studentscounter']");
+  
+  elements.forEach((element) => {
+
+    if (inputDate > new Date().getTime() + 7 * 24 * 60 * 60 * 1000) {
+      element.innerHTML = element.id.startsWith('2studentscounter') ? studentsCounter[element.id] : '';
+    } else {
+      element.innerHTML= element.id.startsWith('1studentscounter') ? studentsCounter[element.id] : '';
+    }
+  });
 }
 
 fetch(getUrl() + "/filteredGrades", {
@@ -137,15 +142,30 @@ fetch(getUrl() + "/filteredGrades", {
     const gradeDropdown = document.getElementById("gradeReference");
 
     data = data.sort((a,b) => a._id - b._id)
-
     document.getElementById("nextGrade").value = String(Number(data[data.length - 1]._id) + 1);
-
     data = data.sort((a,b) => sortGrade(a.description,b.description))
 
     data.forEach((grade) => {
-      const option = document.createElement("option");
+
+      var option = document.createElement("option");
       option.value = grade._id;
-      option.text = `${grade.description}`;
+      option.text = `${grade.description} - Vagas: `;
+
+      var vacancies1 = document.createElement("div")
+      vacancies1.innerHTML = 8
+
+      vacancies1.id = `1studentscounter${grade._id}`;
+
+      var vacancies2 = document.createElement("div")
+      vacancies2.innerHTML = 8
+
+      vacancies2.id = `2studentscounter${grade._id}`;
+
+      studentsCounter[`1studentscounter${grade._id}`] = 8
+      studentsCounter[`2studentscounter${grade._id}`] = 8
+      
+      option.appendChild(vacancies1)
+      option.appendChild(vacancies2)
       option.style.display = "none"
       gradeDropdown.appendChild(option);
     });
