@@ -1,1 +1,1 @@
-function getUrl(){return "https://7405-2804-d45-c821-b800-92cd-b714-c3d0-6e2.ngrok-free.app/api"}
+function getUrl(){return "https://8b38-200-128-141-106.ngrok-free.app/api"}
